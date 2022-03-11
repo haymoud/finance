@@ -55,7 +55,7 @@ def index():
 
 
     row1 = db.execute(
-        "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = ? GROUP BY (buy_info.symbol, users.cash)", session["user_id"])
+        "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = ?", session["user_id"])
 
     try:
         symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = ?", session["user_id"])
