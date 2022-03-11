@@ -53,11 +53,9 @@ def index():
     except:
         return apology("cannot execute")"""
 
-    try:
-        row1 = db.execute(
+
+    row1 = db.execute(
         "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = ? GROUP BY (buy_info.symbol, users.cash)", session["user_id"])
-    except:
-        return apology("row1 error line 57")
 
     try:
         symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = ?", session["user_id"])
