@@ -53,16 +53,19 @@ def index():
     except:
         return apology("cannot execute")"""
 
-    row1 = db.execute(
-        "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = id_user GROUP BY (symbol)")
+    # id
+    id = db.excute("SELECT id FROM user")
 
-    symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = id_user")
+    row1 = db.execute(
+        "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = ? GROUP BY (symbol)", session["user_id"])
+
+    symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = ?", session["user_id"])
 
     number = {}
 
     for symbol in symbols:
         sum_shares = db.execute(
-            "SELECT SUM(number_shares) as na FROM users, buy_info WHERE id = id_user AND symbol=?", symbol["symbol"])
+            "SELECT SUM(number_shares) as na FROM users, buy_info WHERE id = ? AND symbol=?", session["user_id"], symbol["symbol"])
         if symbol["symbol"] not in number:
             number[symbol["symbol"]] = sum_shares[0]["na"]
         else:
@@ -97,7 +100,7 @@ def buy():
             return apology("enter valid symbol and shares")
         else:
             # create table
-            db.execute("CREATE TABLE IF NOT EXISTS buy_info (id_user, symbol TEXT NOT NULL, company_name TEXT NOT NULL, price_symbol REAL,date_buy TEXT NOT NULL, number_shares INTEGER, FOREIGN KEY(id_user) REFERENCES users(id))")
+            # db.execute("CREATE TABLE IF NOT EXISTS buy_info (id_user, symbol TEXT NOT NULL, company_name TEXT NOT NULL, price_symbol REAL,date_buy TEXT NOT NULL, number_shares INTEGER, FOREIGN KEY(id_user) REFERENCES users(id))")
 
             # check if the user cab buy
             rows = db.execute("select cash from users where id = ?", session["user_id"])[0]
@@ -234,13 +237,13 @@ def register():
 def sell():
     """Sell shares of stock"""
     # number of shares displayed and can be sold
-    symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = id_user")
+    symbols = db.execute("SELECT DISTINCT(symbol) FROM users, buy_info WHERE id = ?", session["user_id"])
 
     number = {}
 
     for symbol in symbols:
         sum_shares = db.execute(
-            "SELECT SUM(number_shares) as na FROM users, buy_info WHERE id = id_user AND symbol=?", symbol["symbol"])
+            "SELECT SUM(number_shares) as na FROM users, buy_info WHERE id = ? AND symbol=?", session["user_id"], symbol["symbol"])
         if symbol["symbol"] not in number:
             number[symbol["symbol"]] = sum_shares[0]["na"]
         else:
