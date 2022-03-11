@@ -53,9 +53,6 @@ def index():
     except:
         return apology("cannot execute")"""
 
-    # id
-    id = db.excute("SELECT id FROM user")
-
     row1 = db.execute(
         "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = ? GROUP BY (symbol)", session["user_id"])
 
