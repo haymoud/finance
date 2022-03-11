@@ -1,0 +1,48 @@
+{% extends "layout.html"%}
+
+{% block title %}
+   portfolio
+{% endblock %}
+
+{% block main %}
+    <table class="table tablestriped">
+        <thead>
+            <tr>
+                <th class="text-start">Symbol</th>
+                <th class="text-start">Name</th>
+                <th class="text-end">Shares</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">TOTAL</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if leng_row != 0 %}
+                {% for row in row1 %}
+                    {% if number_of_shares[row.symbol] != 0 %}
+                    <tr>
+                        <td>{{ row.symbol }}</td>
+                        <td>{{ row.company_name }}</td>
+                        <td> {{ number_of_shares[row.symbol] }} </td>
+                        <td>{{ row.price_symbol | usd}}</td>
+                        <td>{{ (number_of_shares[row.symbol] * row.price_symbol) | usd}}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+        </tbody>
+        <tfoot>
+            {% if leng_row != 0 %}
+                <tr>
+                    <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
+                    <td class="border-0 text-end">{{ row1[0]["cash"] | usd }}</td>
+                </tr>
+                <tr>
+                    <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
+                    <td class="border-0 w-bold text-end">{{ (total + row1[0]["cash"]) | usd}}</tr>
+                </tr>
+            {% endif %}
+        </tfoot>
+    </table>
+{% endblock %}

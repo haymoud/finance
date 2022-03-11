@@ -1,0 +1,33 @@
+{% extends "layout.html"%}
+
+{% block title %}
+   history
+{% endblock %}
+
+{% block main %}
+    <table class="table tablestriped">
+        <thead>
+            <tr>
+                <th class="text-start">Symbol</th>
+                <th class="text-end">Shares</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">Transacted</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if leng_row != 0 %}
+                {% for row in row1 %}
+
+                    <tr>
+                        <td>{{ row.symbol }}</td>
+                        <td>{{ row.number_shares }}</td>
+                        <td>{{ row.price_symbol | usd}}</td>
+                        <td>{{ row.date_buy }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

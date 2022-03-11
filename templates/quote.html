@@ -1,0 +1,21 @@
+{% extends "layout.html"%}
+
+{% block title %}
+      Quote
+
+{% endblock %}
+
+{% block main %}
+    {% if request_via_get %}
+        <form action="/quote" method="post">
+            <div class="mb-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="symbol" placeholder="Symbol" type="text">
+            </div>
+            <button class="btn btn-primary" type="submit">Quote</button>
+        </form>
+    {% else %}
+        <p>
+            A share of {{ lookup_result["name"] }}- Class A ({{ lookup_result["symbol"] }}) costs  ${{ lookup_result["price"] | usd }}.
+        </p>
+    {% endif %}
+{% endblock %}
