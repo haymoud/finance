@@ -48,7 +48,10 @@ def after_request(response):
 def index():
     """Show portfolio of stocks"""
     # create table
-    db.execute("CREATE TABLE IF NOT EXISTS buy_info (id_user, symbol TEXT NOT NULL, company_name TEXT NOT NULL, price_symbol REAL,date_buy TEXT NOT NULL, number_shares INTEGER, FOREIGN KEY(id_user) REFERENCES users(id))")
+    try:
+        db.execute("CREATE TABLE IF NOT EXISTS buy_info (id_user, symbol TEXT NOT NULL, company_name TEXT NOT NULL, price_symbol REAL,date_buy TEXT NOT NULL, number_shares INTEGER, FOREIGN KEY(id_user) REFERENCES users(id))")
+    except:
+        pass
 
     row1 = db.execute(
         "SELECT  cash, symbol, company_name, price_symbol, date_buy FROM users, buy_info WHERE id = id_user GROUP BY (symbol)")
